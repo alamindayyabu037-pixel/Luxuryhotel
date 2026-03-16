@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gallery — Luxury Hotel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    :root {
+      --gold:      #BFA06A;
+      --gold-b:    #D4B97A;
+      --gold-line: rgba(191,160,106,0.40);
+      --white:     #FAF7F2;
+      --ink:       #0C0B09;
+      --light:     #F2F2F2;
+      --mid:       #666360;
+      --dark-text: #1A1714;
+    }
+    html, body { font-family:'Jost',sans-serif; background:var(--light); color:var(--dark-text); overflow-x:hidden; }
+
+    /* ── NAV ── */
+    .nav {
+      position:fixed; top:0; left:0; right:0; z-index:100;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:18px clamp(20px,6vw,52px);
+      background:rgba(12,11,9,0.96); backdrop-filter:blur(18px);
+      border-bottom:1px solid rgba(191,160,106,0.10);
+    }
+    .logo-name { font-family:'Playfair Display',serif; font-size:20px; font-weight:400; letter-spacing:0.12em; color:var(--white); text-decoration:none; }
+    .logo-name em { font-style:italic; color:var(--gold); }
+    .nav-links { display:flex; align-items:center; gap:clamp(18px,3vw,36px); }
+    .nav-links a { font-size:10.5px; font-weight:300; letter-spacing:0.22em; color:rgba(250,247,242,0.60); text-decoration:none; text-transform:uppercase; transition:color 0.3s; position:relative; }
+    .nav-links a:hover, .nav-links a.active { color:var(--gold); }
+    .nav-links a.active::after { content:''; position:absolute; bottom:-4px; left:0; right:0; height:1px; background:var(--gold); }
+    .nav-book { padding:9px 22px; background:var(--gold); color:var(--ink); font-size:9.5px; font-weight:500; letter-spacing:0.28em; text-transform:uppercase; text-decoration:none; transition:background 0.3s; }
+    .nav-book:hover { background:var(--gold-b); }
+    .hamburger { display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:4px; }
+    .hamburger i { display:block; height:1px; background:var(--white); }
+    .hamburger i:nth-child(1) { width:26px; }
+    .hamburger i:nth-child(2) { width:18px; }
+    .hamburger i:nth-child(3) { width:22px; }
+
+    /* ── PAGE HERO ── */
+    .page-hero {
+      height:52vh; min-height:320px;
+      position:relative; overflow:hidden;
+      display:flex; align-items:flex-end;
+      padding:0 clamp(20px,6vw,52px) clamp(36px,6vh,56px);
+    }
+    .page-hero-bg {
+      position:absolute; inset:0;
+      background:url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1400&q=85') center/cover no-repeat;
+    }
+    .page-hero-overlay { position:absolute; inset:0; background:linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.72) 100%); }
+    .page-hero-content { position:relative; z-index:2; }
+    .breadcrumb { display:flex; align-items:center; gap:8px; font-size:9px; font-weight:300; letter-spacing:0.32em; color:rgba(250,247,242,0.50); text-transform:uppercase; margin-bottom:12px; }
+    .breadcrumb a { color:var(--gold); text-decoration:none; }
+    .breadcrumb span { color:rgba(250,247,242,0.30); }
+    .page-hero h1 { font-family:'Playfair Display',serif; font-size:clamp(36px,7vw,64px); font-weight:400; color:var(--white); line-height:1.08; }
+    .page-hero h1 em { font-style:italic; color:var(--gold-b); }
+
+    /* ── FILTER BAR ── */
+    .filter-bar { background:#fff; border-bottom:1px solid rgba(191,160,106,0.15); position:sticky; top:57px; z-index:90; }
+    .filter-inner { max-width:1200px; margin:0 auto; padding:0 clamp(20px,6vw,52px); display:flex; align-items:center; justify-content:space-between; gap:0; overflow-x:auto; scrollbar-width:none; }
+    .filter-inner::-webkit-scrollbar { display:none; }
+    .filter-tabs { display:flex; }
+    .filter-btn { flex-shrink:0; padding:18px 22px; font-family:'Jost',sans-serif; font-size:9.5px; font-weight:400; letter-spacing:0.28em; text-transform:uppercase; color:var(--mid); background:none; border:none; border-bottom:2px solid transparent; cursor:pointer; transition:all 0.3s; white-space:nowrap; }
+    .filter-btn:hover { color:var(--dark-text); }
+    .filter-btn.active { color:var(--gold); border-bottom-color:var(--gold); }
+    .photo-count { font-size:10px; font-weight:300; color:#aaa; letter-spacing:0.1em; white-space:nowrap; padding-right:4px; }
+
+    /* ── MASONRY GRID ── */
+    .gallery-page { max-width:1200px; margin:0 auto; padding:clamp(40px,6vh,64px) clamp(20px,6vw,52px) clamp(60px,10vh,90px); }
+
+    .masonry {
+      columns: 3;
+      column-gap: clamp(10px,1.8vw,18px);
+    }
+    .masonry-item {
+      break-inside: avoid;
+      margin-bottom: clamp(10px,1.8vw,18px);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      border: 1px solid rgba(191,160,106,0.12);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s ease, transform 0.7s ease, box-shadow 0.3s;
+    }
+    .masonry-item.visible { opacity:1; transform:translateY(0); }
+    .masonry-item:hover { box-shadow:0 10px 36px rgba(0,0,0,0.18); }
+
+    .masonry-item img {
+      width:100%; display:block;
+      transition:transform 0.7s ease;
+    }
+    .masonry-item:hover img { transform:scale(1.05); }
+
+    /* hover overlay */
+    .masonry-overlay {
+      position:absolute; inset:0;
+      background:linear-gradient(to top, rgba(12,11,9,0.75) 0%, rgba(12,11,9,0.10) 60%);
+      opacity:0; transition:opacity 0.4s ease;
+      display:flex; flex-direction:column;
+      justify-content:flex-end; padding:18px;
+    }
+    .masonry-item:hover .masonry-overlay { opacity:1; }
+    .masonry-label { font-size:10px; font-weight:400; letter-spacing:0.28em; color:var(--white); text-transform:uppercase; }
+    .masonry-cat { font-size:9px; font-weight:300; letter-spacing:0.18em; color:rgba(191,160,106,0.8); text-transform:uppercase; margin-top:3px; }
+    .masonry-zoom {
+      position:absolute; top:14px; right:14px;
+      width:32px; height:32px;
+      background:rgba(191,160,106,0.85); color:var(--ink);
+      display:flex; align-items:center; justify-content:center;
+      opacity:0; transform:scale(0.8);
+      transition:opacity 0.3s, transform 0.3s;
+    }
+    .masonry-item:hover .masonry-zoom { opacity:1; transform:scale(1); }
+    .masonry-zoom svg { width:14px; height:14px; }
+
+    /* hidden items */
+    .masonry-item.hidden { display:none; }
+
+    /* ── LIGHTBOX ── */
+    .lightbox {
+      position:fixed; inset:0; z-index:400;
+      background:rgba(8,7,5,0.96); backdrop-filter:blur(12px);
+      display:flex; align-items:center; justify-content:center;
+      opacity:0; pointer-events:none; transition:opacity 0.4s ease;
+      padding:20px;
+    }
+    .lightbox.open { opacity:1; pointer-events:all; }
+    .lb-img-wrap { position:relative; max-width:900px; width:100%; }
+    .lb-img-wrap img { width:100%; max-height:80vh; object-fit:contain; display:block; }
+    .lb-caption {
+      margin-top:14px; text-align:center;
+      font-size:10px; font-weight:300; letter-spacing:0.32em;
+      color:rgba(250,247,242,0.55); text-transform:uppercase;
+    }
+    .lb-close {
+      position:fixed; top:22px; right:26px;
+      background:none; border:none; color:var(--white);
+      font-size:28px; font-weight:200; cursor:pointer;
+      font-family:'Jost',sans-serif; transition:color 0.3s; z-index:410;
+    }
+    .lb-close:hover { color:var(--gold); }
+    .lb-prev, .lb-next {
+      position:fixed; top:50%; transform:translateY(-50%);
+      background:rgba(191,160,106,0.15); border:1px solid var(--gold-line);
+      color:var(--gold); width:44px; height:44px;
+      display:flex; align-items:center; justify-content:center;
+      cursor:pointer; transition:background 0.3s; z-index:410;
+    }
+    .lb-prev { left:16px; }
+    .lb-next { right:16px; }
+    .lb-prev:hover, .lb-next:hover { background:rgba(191,160,106,0.35); }
+    .lb-prev svg, .lb-next svg { width:16px; height:16px; }
+    .lb-counter { position:fixed; bottom:22px; left:50%; transform:translateX(-50%); font-size:10px; font-weight:300; letter-spacing:0.3em; color:rgba(250,247,242,0.38); }
+
+    /* ── MOBILE NAV OVERLAY ── */
+    .nav-overlay { position:fixed; inset:0; z-index:200; background:rgba(10,9,7,0.97); backdrop-filter:blur(22px); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; transform:translateY(-100%); transition:transform 0.6s cubic-bezier(0.77,0,0.175,1); }
+    .nav-overlay.open { transform:translateY(0); }
+    .nav-close-btn { position:absolute; top:22px; right:clamp(20px,6vw,52px); background:none; border:none; color:var(--white); font-size:26px; cursor:pointer; transition:color 0.3s; }
+    .nav-close-btn:hover { color:var(--gold); }
+    .nav-ol { font-family:'Playfair Display',serif; font-size:clamp(26px,6.5vw,44px); font-weight:400; color:rgba(250,247,242,0.78); text-decoration:none; letter-spacing:0.06em; padding:6px 0; transition:color 0.3s; }
+    .nav-ol:hover { color:var(--gold); }
+    .nav-sep { width:1px; height:16px; background:rgba(191,160,106,0.22); margin:2px 0; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width:900px) {
+      .masonry { columns:2; }
+      .nav-links, .nav-book { display:none; }
+      .hamburger { display:flex; }
+    }
+    @media (max-width:480px) {
+      .masonry { columns:1; }
+      .lb-prev { left:6px; }
+      .lb-next { right:6px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV OVERLAY -->
+  <div class="nav-overlay" id="navOverlay">
+    <button class="nav-close-btn" onclick="closeMenu()">✕</button>
+    <a class="nav-ol" href="index.html">Home</a>
+    <div class="nav-sep"></div>
+    <a class="nav-ol" href="rooms.html">Rooms</a>
+    <div class="nav-sep"></div>
+    <a class="nav-ol" href="gallery.html">Gallery</a>
+    <div class="nav-sep"></div>
+    <a class="nav-ol" href="contact.html">Contact</a>
+  </div>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <a href="index.html" class="logo-name">Luxury<em>Hotel</em></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="rooms.html">Rooms</a>
+      <a href="gallery.html" class="active">Gallery</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <a href="rooms.html" class="nav-book">Book Now</a>
+    <button class="hamburger" onclick="openMenu()"><i></i><i></i><i></i></button>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <div class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div class="page-hero-overlay"></div>
+    <div class="page-hero-content">
+      <div class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span>›</span>
+        <span>Gallery</span>
+      </div>
+      <h1>Our <em>Gallery</em></h1>
+    </div>
+  </div>
+
+  <!-- FILTER BAR -->
+  <div class="filter-bar">
+    <div class="filter-inner">
+      <div class="filter-tabs">
+        <button class="filter-btn active" onclick="filterGallery('all',this)">All Photos</button>
+        <button class="filter-btn" onclick="filterGallery('rooms',this)">Rooms</button>
+        <button class="filter-btn" onclick="filterGallery('dining',this)">Dining</button>
+        <button class="filter-btn" onclick="filterGallery('pool',this)">Pool & Spa</button>
+        <button class="filter-btn" onclick="filterGallery('exterior',this)">Exterior</button>
+      </div>
+      <span class="photo-count" id="photoCount">20 Photos</span>
+    </div>
+  </div>
+
+<!-- GALLERY MASONRY -->
+  <div class="gallery-page">
+    <div class="masonry" id="masonryGrid">
+
+      <div class="masonry-item" data-cat="rooms" data-label="Presidential Suite" onclick="openLightbox(0)">
+        <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=85" alt="Presidential Suite"/>
+        <div class="masonry-overlay">
+          <div class="masonry-label">Presidential Suite</div>
+          <div class="masonry-cat">Rooms</div>
+        </div>
+        <div class="masonry-zoom"><svg viewBox="0 0 24 24" fill="none"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      </div>
+
+      <div class="masonry-item" data-cat="pool" data-label="Infinity Pool" onclick="openLightbox(1)">
+        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=85" alt="Infinity Pool"/>
+        <div class="masonry-overlay">
+          <div class="masonry-label">Infinity Pool</div>
+          <div class="masonry-cat">Pool & Spa</div>
+        </div>
+        <div class="masonry-zoom"><svg viewBox="0 0 24 24" fill="none"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      </div>
+
+      <div class="masonry-item" data-cat="dining" data-label="Fine Dining" onclick="openLightbox(2)">
+        <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=85" alt="Fine Dining"/>
+        <div class="masonry-overlay">
+          <div class="masonry-label">Fine Dining Restaurant</div>
+          <div class="masonry-cat">Dining</div>
+        </div>
+        <div class="masonry-zoom"><svg viewBox="0 0 24 24" fill="none"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      </div>
+
+      <div class="masonry-item" data-cat="rooms" data-label="Deluxe Room" onclick="openLightbox(3)">
+        <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&q=85" alt="Deluxe Room"/>
+        <div class="masonry-overlay">
+          <div class="masonry-label">Deluxe Room</div>
+          <div class="masonry-cat">Rooms</div>
+        </div>
+        <div class="masonry-zoom"><svg viewBox="0 0 24 24" fill="none"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      </div>
+
+      <div class="masonry-item" data-cat="pool" data-label="Spa Treatment" onclick="openLightbox(4)">
+        <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=800&q=85" alt="Spa"/>
+        <div class="masonry-overlay">
+          <div class="masonry-label">Spa &amp; Wellness</div>
+          <div class="masonry-cat">Pool & Spa</div>
+        </div>
+        <div class="masonry-zoom"><svg viewBox="0 0 24 24" fill="none"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      </div>
+
+      <div class="masonry-item" data-cat="exterior" data-label="Hotel Exterior" onclick="openLightbox(5)">
+        <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800&q=85" alt="Hotel Exterior"/>
+        <div class="masonry-overlay">
+          <div class="masonry-label">Hotel Exterior</div>
+          <div class="masonry-cat">Exterior</div>
+        </div>
+        <div class="masonry-zoom"><svg viewBox="0 0 24 24" fill="none"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      </div>
+
+      <div class="masonry-item" data-cat="rooms" data-label="Junior Suite" onclick="openLightbox(6)">
+        <img src="https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=800&q=85" alt="Junior Suite"/>
+        <div class="masonry-overlay">
+          <div class="masonry-label">Junior Suite</div>
+          <div class="masonry-cat">Rooms</div>
+        </div>
+        <div class="masonry-zoom"><svg viewBox="0 0 24 24" fill="none"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      </div>
+
+      <div class="masonry-item" data-cat="dining" data-label="Breakfast Lounge" onclick="openLightbox(7)">
+        <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800&q=85" alt="Breakfast Lounge"/>
+        <div class="masonry-overlay">
+          <div class="masonry-label">Breakfast Lounge</div>
+          <div class="masonry-cat">Dining</div>
+        </div>
+        <div class="masonry-zoom"><svg viewBox="0 0 24 24" fill="none"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      </div>
+
+      <div class="masonry-item" data-cat="exterior" data-label="Hotel Lobby" onclick="openLightbox(8)">
+        <img src="https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=800&q=85" alt="Hotel Lobby"/>
+        <div class="masonry-overlay">
+          <div class="masonry-label">Grand Lobby</div>
+          <div class="masonry-cat">Exterior</div>
+        </div>
+        <div class="masonry-zoom"><svg viewBox="0 0 24 24" fill="none"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      </div>
+
+      <div class="masonry-item" data-cat="pool" data-label="Pool at Night" onclick="openLightbox(9)">
+        <img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800&q=85" alt="Pool at Night"/>
+        <div class="masonry-overlay">
+          <div class="masonry-label">Pool at Dusk</div>
+          <div class="masonry-cat">Pool & Spa</div>
+        </div>
+        <div class="masonry-zoom"><svg viewBox="0 0 24 24" fill="none"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      </div>
+
+      <div class="masonry-item" data-cat="rooms" data-label="Pool Villa" onclick="openLightbox(10)">
+        <img src="https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?w=800&q=85" alt="Pool Villa"/>
+        <div class="masonry-overlay">
+          <div class="masonry-label">Garden Villa</div>
+          <div class="masonry-cat">Rooms</div>
+        </div>
+        <div class="masonry-zoom"><svg viewBox="0 0 24 24" fill="none"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      </div>
+
+      <div class="masonry-item" data-cat="dining" data-label="Bar Lounge" onclick="openLightbox(11)">
+        <img src="https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=800&q=85" alt="Bar Lounge"/>
+        <div class="masonry-overlay">
+          <div class="masonry-label">Cocktail Bar</div>
+          <div class="masonry-cat">Dining</div>
+        </div>
+        <div class="masonry-zoom"><svg viewBox="0 0 24 24" fill="none"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      </div>
+
+      <div class="masonry-item" data-cat="exterior" data-label="Hotel at Night" onclick="openLightbox(12)">
+        <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&q=85" alt="Hotel at Night"/>
+        <div class="masonry-overlay">
+          <div class="masonry-label">Hotel at Night</div>
+          <div class="masonry-cat">Exterior</div>
+        </div>
+        <div class="masonry-zoom"><svg viewBox="0 0 24 24" fill="none"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      </div>
+
+      <div class="masonry-item" data-cat="rooms" data-label="Classic Room" onclick="openLightbox(13)">
+        <img src="https://images.unsplash.com/photo-1540518614846-7eded433c457?w=800&q=85" alt="Classic Room"/>
+        <div class="masonry-overlay">
+          <div class="masonry-label">Classic Room</div>
+          <div class="masonry-cat">Rooms</div>
+        </div>
+        <div class="masonry-zoom"><svg viewBox="0 0 24 24" fill="none"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      </div>
+
+      <div class="masonry-item" data-cat="pool" data-label="Wellness Center" onclick="openLightbox(14)">
+        <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800&q=85" alt="Wellness Center"/>
+        <div class="masonry-overlay">
+          <div class="masonry-label">Wellness Center</div>
+          <div class="masonry-cat">Pool & Spa</div>
+        </div>
+        <div class="masonry-zoom"><svg viewBox="0 0 24 24" fill="none"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      </div>
+
+    </div>
+  </div>
+  
+  
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox">
+    <button class="lb-close" onclick="closeLightbox()">✕</button>
+    <button class="lb-prev" onclick="lbNav(-1)">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="lb-img-wrap">
+      <img id="lbImg" src="" alt=""/>
+      <div class="lb-caption" id="lbCaption"></div>
+    </div>
+    <button class="lb-next" onclick="lbNav(1)">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="lb-counter" id="lbCounter"></div>
+  </div>
+
+  <script>
+    /* ── scroll reveal ── */
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach((e,i) => {
+        if(e.isIntersecting){
+          setTimeout(() => e.target.classList.add('visible'), i * 60);
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold:0.08 });
+    document.querySelectorAll('.masonry-item').forEach(el => obs.observe(el));
+
+    /* ── filter ── */
+    function filterGallery(cat, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const items = document.querySelectorAll('.masonry-item');
+      let count = 0;
+      items.forEach(item => {
+        const show = cat === 'all' || item.dataset.cat === cat;
+        item.classList.toggle('hidden', !show);
+        if(show) count++;
+      });
+      document.getElementById('photoCount').textContent = count + ' Photo' + (count !== 1 ? 's' : '');
+      buildVisibleList();
+    }
+
+    /* ── lightbox ── */
+    let visibleItems = [];
+    let currentIdx = 0;
+
+    function buildVisibleList() {
+      visibleItems = [...document.querySelectorAll('.masonry-item:not(.hidden)')];
+    }
+    buildVisibleList();
+
+    function openLightbox(globalIdx) {
+      const allItems = [...document.querySelectorAll('.masonry-item')];
+      const item = allItems[globalIdx];
+      currentIdx = visibleItems.indexOf(item);
+      if(currentIdx === -1) currentIdx = 0;
+      showLb();
+      document.getElementById('lightbox').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function showLb() {
+      const item = visibleItems[currentIdx];
+      if(!item) return;
+      document.getElementById('lbImg').src = item.querySelector('img').src;
+      document.getElementById('lbCaption').textContent = item.dataset.label;
+      document.getElementById('lbCounter').textContent = (currentIdx+1) + ' / ' + visibleItems.length;
+    }
+
+    function lbNav(dir) {
+      currentIdx = (currentIdx + dir + visibleItems.length) % visibleItems.length;
+      const img = document.getElementById('lbImg');
+      img.style.opacity = '0';
+      setTimeout(() => { showLb(); img.style.transition='opacity 0.3s'; img.style.opacity='1'; }, 180);
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    /* keyboard navigation */
+    document.addEventListener('keydown', e => {
+      if(!document.getElementById('lightbox').classList.contains('open')) return;
+      if(e.key === 'ArrowRight') lbNav(1);
+      if(e.key === 'ArrowLeft')  lbNav(-1);
+      if(e.key === 'Escape')     closeLightbox();
+    });
+
+    /* click outside image to close */
+    document.getElementById('lightbox').addEventListener('click', e => {
+      if(e.target === document.getElementById('lightbox')) closeLightbox();
+    });
+
+    /* nav */
+    function openMenu()  { document.getElementById('navOverlay').classList.add('open'); }
+    function closeMenu() { document.getElementById('navOverlay').classList.remove('open'); }
+  </script>
+
+</body>
+</html>
