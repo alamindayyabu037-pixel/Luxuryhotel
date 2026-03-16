@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gallery</title>
+<link rel="stylesheet" href="gallery.css">
+</head>
+
+<body>
+  
+  <div class="container">
+        <main class="main-content">
+
+            <section class="history">
+                <div class="heading-bar">
+                    <h2>Shahid Mahmud Library</h2>
+                    <button class="menu-toggle" id="menuToggleBtn">
+                        ☰
+
+                </div>
+
+            </section>
+
+        </main>
+    </div>
+    <div class="sidebar-cikin-main" id="mySidebar">
+
+        <div class="sidebar-content">
+            <input type="text" placeholder="Search..." class="search-box">
+
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#">Blog</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="#">Article</a></li>
+                <li><a href="#">Video clips</a></li>
+                <li> <a href="library.html">Book library</a></li>
+                <li> <a href="calendar.html">Islamic Calender</a></li>
+            </ul>
+        </div>
+
+    </div>
+
+  
+<!-- gallery.html -->
+<section class="gallery-section">
+  <h2>Gallery</h2>
+  <div class="gallery-grid">
+    <img src="/libry /1.jpeg" alt="Gallery Image" class="gallery-img" />
+    <img src="/libry /2.jpeg" alt="Gallery Image" class="gallery-img" />
+    <img src="/libry /3.jpeg" alt="Gallery Image" class="gallery-img" />
+    <img src="/libry /4.jpeg" alt="Gallery Image" class="gallery-img" />
+    <img src="/libry /5.jpeg" alt="Gallery Image" class="gallery-img" />
+    <img src="/libry /6.jpeg" alt="Gallery Image" class="gallery-img" />
+<img src="/libry /Shahid 1.jpg" alt="Gallery Image" class="gallery-img" />
+<img src="/libry /Shahid 2.jpg" alt="Gallery Image" class="gallery-img" />
+<img src="/libry /Shahid 3.jpg" alt="Gallery Image" class="gallery-img" />
+<img src="/libry /shahid 4.jpg" alt="Gallery Image" class="gallery-img" />
+<img src="/libry /shahid 5.jpg" alt="Gallery Image" class="gallery-img" />
+<img src="/libry /shahid 6.jpg" alt="Gallery Image" class="gallery-img" />
+<img src="/libry /shahid 7.jpg" alt="Gallery Image" class="gallery-img" />
+<img src="/libry /shahid 8.jpg" alt="Gallery Image" class="gallery-img" />
+<img src="/libry /shahid 9.jpg" alt="Gallery Image" class="gallery-img" />
+<img src="/libry /shahid 10.jpg" alt="Gallery Image" class="gallery-img" />
+<img src="/libry /shahid 11.jpg" alt="Gallery Image" class="gallery-img" />
+<img src="/libry /shahid 13.jpg" alt="Gallery Image" class="gallery-img" />
+<img src="/libry /shahid 14.jpg" alt="Gallery Image" class="gallery-img" />
+<img src="/libry /images (1).jpeg" alt="Gallery Image" class="gallery-img" />
+  </div>
+  
+  <div id="lightbox" class="lightbox">
+    <span class="close">&times;</span>
+    <img class="lightbox-content" id="lightbox-img" />
+  </div>
+</section>
+
+ <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>Shahid Mahmud Library</h3>
+                <p>
+                    Shahid Mahmud Library — Spreading the light of knowledge and inspiring minds through books and
+                    learning.
+
+                </p>
+
+            </div>
+    <div class="footer-column links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="mission.html">Our Mission</a></li>
+                    <li><a href="video.html">Video - Clips</a></li>
+                    <li><a href="library.html">Book Library</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column contact-social">
+                <h3>Follow Us</h3>
+                <div class="social-icons">
+                    <a href="#" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+
+                <p>Email: info@shahidmahmudlibrary.org</p>
+                <p><i class="fa-brands fa-whatsapp"></i> Watsapp: (+234)-7030002000</p>
+            </div>
+
+            <div class="copyright">
+                <p>&copy; 2025 Shahid Mahmud Library. All right reserved <br> 
+                Developed by sufeecodex</p>
+            </div>
+        </div>
+    </footer>
+
+<script>
+  const imgs = document.querySelectorAll('.gallery-img');
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightbox-img');
+const closeBtn = document.querySelector('.close');
+
+imgs.forEach(img =>{
+  img.addEventListener('click', ()=>{
+    lightbox.style.display = 'flex';
+    lightboxImg.src = img.src;
+  })
+});
+
+closeBtn.addEventListener('click', ()=>{
+  lightbox.style.display = 'none';
+});
+</script>
+
+
+<script>
+// index.html (around lines 224-226)
+
+        function setupSidebarToggle() {
+            // Gyara layuka biyu na farko
+            const toggleButton = document.getElementById('menuToggleBtn');
+            const sidebar = document.getElementById('mySidebar');
+
+            // Tabbatar cewa an samu duka biyun kafin a ci gaba
+            if (toggleButton && sidebar) {
+                toggleButton.addEventListener('click', function () {
+                    // ... sauran lambarka
+                    sidebar.classList.toggle('bude');
+
+                    if (sidebar.classList.contains('bude')) {
+                        toggleButton.innerHTML = 'X';
+                    } else {
+                        toggleButton.innerHTML = '≡';
+                    }
+                });
+            }
+        }
+        document.addEventListener('DOMContentLoaded', setupSidebarToggle);
+
+  </script>
+</body>
+
+</html>

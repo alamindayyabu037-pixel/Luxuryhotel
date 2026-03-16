@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Luxury Hotel</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css">
+
+    <link rel="stylesheet" href="style.css">
+  
+</head>
+<body>
+
+  <!-- NAV OVERLAY -->
+  <div class="nav-overlay" id="navOverlay">
+    <button class="nav-close" onclick="closeMenu()">✕</button>
+    <a class="nav-link" href="#">Home</a>
+    <div class="nav-sep"></div>
+    <a class="nav-link" href="rooms.html">Rooms &amp; Suites</a>
+    <div class="nav-sep"></div>
+    <a class="nav-link" href="#">Dining</a>
+    <div class="nav-sep"></div>
+    <a class="nav-link" href="#">Spa &amp; Wellness</a>
+    <div class="nav-sep"></div>
+    <a class="nav-link" href="gallery.html">Gallery</a>
+    <div class="nav-sep"></div>
+    <a class="nav-link" href="contact.html">Contact</a>
+    <p class="nav-footer">. 2026 &nbsp;·&nbsp; Where Elegance Lives</p>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+
+    <div class="slides">
+      <div class="slide slide-1 active"></div>
+      <div class="slide slide-2"></div>
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="hero-grain"></div>
+
+    <nav class="nav" id="mainNav">
+      <div class="logo">
+        <div class="logo-name">Luxury<em>Hotel</em></div>
+        <div class="logo-rule"></div>
+        <div class="logo-tag">Where Elegance Lives</div>
+      </div>
+      <button class="hamburger" onclick="openMenu()" aria-label="Open menu">
+        <i></i><i></i><i></i>
+      </button>
+    </nav>
+
+    <div class="hero-body">
+      <div class="eyebrow">
+        <div class="eyebrow-dash"></div>
+        <span class="eyebrow-text">Smart rooms, premium security, and exceptional service.</span>
+      </div>
+
+      <h1 class="headline">
+        Experience<br>
+        <em>Pure Luxury</em>
+      </h1>
+
+      <p class="subtext">
+        Your sanctuary away from home — where timeless elegance,
+        warm hospitality, and refined comfort come together as one.
+      </p>
+
+      <div class="cta-row">
+        <a href="#" class="btn-book">
+          <span>Reserve Your Stay</span>
+          <svg width="15" height="10" viewBox="0 0 15 10" fill="none">
+            <path d="M1 5h13M9 1l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <a href="#" class="btn-explore">Discover Rooms</a>
+      </div>
+    </div>
+
+    <div class="scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+
+    <div class="bottom-strip">
+      <div class="stat">
+        <span class="stat-val">48</span>
+        <span class="stat-lbl">Suites</span>
+      </div>
+      <div class="stat">
+        <span class="stat-val">5★</span>
+        <span class="stat-lbl">Rating</span>
+      </div>
+      <div class="stat">
+        <span class="stat-val">14</span>
+        <span class="stat-lbl">Awards</span>
+      </div>
+      <div class="stat">
+        <span class="stat-val">24h</span>
+        <span class="stat-lbl">Service</span>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+    </div>
+
+  </section>
+  
+  <!-- ABOUT SECTION -->
+<section class="about" id="about">
+
+  <div class="about-side-label" aria-hidden="true">Our Story</div>
+
+  <div class="about-inner">
+
+    <!-- LEFT — image stack -->
+    <div class="about-images">
+      <div class="about-img about-img-main">
+        <img src="4.jpg" alt="Hotel lobby"/>
+      </div>
+      <div class="about-img about-img-accent">
+        <img src="3.jpg" alt="Hotel suite"/>
+      </div>
+      <div class="about-badge">
+        <span class="badge-num">15</span>
+        <span class="badge-txt">Years of<br>Excellence</span>
+      </div>
+    </div>
+
+    <!-- RIGHT — text content -->
+    <div class="about-content">
+
+      <div class="about-eyebrow">
+        <div class="eyebrow-dash"></div>
+        <span>About Us</span>
+      </div>
+
+      <h2 class="about-heading">
+        A Legacy of<br>
+        <em>Timeless Elegance</em>
+      </h2>
+
+      <p class="about-lead">
+        Since 2010, Luxury Hotel has stood as a symbol of refined hospitality —
+        where every detail is crafted to exceed expectation.
+      </p>
+
+      <p class="about-body">
+        Nestled in the heart of the city, our property blends classic architecture
+        with modern comforts. From our award-winning restaurant to our world-class
+        spa, every corner of our hotel breathes warmth, beauty, and quiet luxury.
+      </p>
+
+      <ul class="about-features">
+        <li>
+          <div class="feat-icon">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+          </div>
+          <div>
+            <strong>5-Star Rated</strong>
+            <span>Consistently recognised for outstanding service</span>
+          </div>
+        </li>
+        <li>
+          <div class="feat-icon">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M9 22V12h6v10" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+          </div>
+          <div>
+            <strong>48 Luxury Suites</strong>
+            <span>Each room a private sanctuary of comfort</span>
+          </div>
+        </li>
+        <li>
+          <div class="feat-icon">
+            <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.3"/><path d="M12 7v5l3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          </div>
+          <div>
+            <strong>24h Concierge</strong>
+            <span>Always at your service, day or night</span>
+          </div>
+        </li>
+      </ul>
+
+      <a href="#" class="about-cta">
+        <span>Discover Our Story</span>
+        <svg width="14" height="10" viewBox="0 0 14 10" fill="none">
+          <path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+
+    </div>
+  </div>
+
+  <div class="about-rule"></div>
+</section>
+  
+  
+  <!-- GALLERY SECTION -->
+<section class="gallery" id="gallery">
+
+  <div class="gallery-header">
+    <div class="about-eyebrow" style="justify-content:center;">
+      <div class="eyebrow-dash"></div>
+      <span>Our Gallery</span>
+      <div class="eyebrow-dash"></div>
+    </div>
+    <h2 class="gallery-heading">A Glimpse of <em>Luxury</em></h2>
+    <p class="gallery-sub">Every corner of our hotel tells a story of elegance and comfort.</p>
+  </div>
+
+  <div class="gallery-track-wrap">
+    <div class="gallery-track" id="galleryTrack">
+      <div class="g-card"><div class="g-img"><img src="5.jpg" alt="Luxury Room"/></div><div class="g-label">Deluxe Room</div></div>
+      <div class="g-card"><div class="g-img"><img src="6.jpg" alt="Suite"/></div><div class="g-label">Legend's Suite</div></div>
+      <div class="g-card"><div class="g-img"><img src="7.jpg" alt="Pool"/></div><div class="g-label">Infinity Pool</div></div>
+      <div class="g-card"><div class="g-img"><img src="8.jpg" alt="Restaurant"/></div><div class="g-label">Fine Dining</div></div>
+      <div class="g-card"><div class="g-img"><img src="9.jpg" alt="Spa"/></div><div class="g-label">Spa &amp; Wellness</div></div>
+      <!-- duplicates for seamless loop -->
+      <div class="g-card" aria-hidden="true"><div class="g-img"><img src="YOUR_IMG_1.jpg" alt=""/></div><div class="g-label">Deluxe Room</div></div>
+      <div class="g-card" aria-hidden="true"><div class="g-img"><img src="YOUR_IMG_2.jpg" alt=""/></div><div class="g-label">Legend's Suite</div></div>
+      <div class="g-card" aria-hidden="true"><div class="g-img"><img src="YOUR_IMG_3.jpg" alt=""/></div><div class="g-label">Infinity Pool</div></div>
+      <div class="g-card" aria-hidden="true"><div class="g-img"><img src="YOUR_IMG_4.jpg" alt=""/></div><div class="g-label">Fine Dining</div></div>
+      <div class="g-card" aria-hidden="true"><div class="g-img"><img src="YOUR_IMG_5.jpg" alt=""/></div><div class="g-label">Spa &amp; Wellness</div></div>
+    </div>
+  </div>
+
+  <div class="gallery-footer">
+    <a href="gallery.html" class="gallery-btn">
+      <span>View Full Gallery</span>
+      <svg width="15" height="10" viewBox="0 0 15 10" fill="none">
+        <path d="M1 5h13M9 1l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  </div>
+
+</section>
+
+
+<!-- FEATURED ROOM -->
+<div class="room-featured">
+  <div class="room-featured-img">
+    <img src="12.jpg" alt="Presidential Suite"/>
+    <div class="room-featured-badge">Most Popular</div>
+  </div>
+  <div class="room-featured-info">
+    <div class="room-cat">Featured Suite</div>
+    <h3 class="room-name">Legend's Suite</h3>
+    <p class="room-desc">An unrivalled sanctuary of space and sophistication. Floor-to-ceiling windows frame breathtaking city views, while bespoke furnishings and a private terrace complete this crown jewel of our hotel.</p>
+    <div class="room-specs">
+      <div class="room-spec">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        <span>120 m²</span>
+      </div>
+      <div class="room-spec">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M3 20v-8a2 2 0 012-2h14a2 2 0 012 2v8M1 20h22M7 10V7a5 5 0 0110 0v3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        <span>King Bed</span>
+      </div>
+      <div class="room-spec">
+        <svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="1.3"/><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        <span>1–3 Guests</span>
+      </div>
+      <div class="room-spec">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        <span>City View</span>
+      </div>
+    </div>
+    <div class="room-price-row">
+      <div>
+        <span class="room-from">From</span>
+        <span class="room-price">$850</span>
+        <span class="room-per">/ night</span>
+      </div>
+      <a href="#" class="room-btn-primary">
+        <span>Book Now</span>
+        <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- SMALL CARDS -->
+<div class="rooms-grid">
+  <div class="room-card">
+    <div class="room-card-img">
+      <img src="11.jpg" alt="Deluxe Room"/>
+      <div class="room-card-overlay"><a href="#" class="room-card-btn">View Room</a></div>
+    </div>
+    <div class="room-card-info">
+      <div class="room-card-top">
+        <h4 class="room-card-name">Deluxe Room</h4>
+        <div class="room-card-price">$320<span>/night</span></div>
+      </div>
+      <p class="room-card-desc">Elegant comfort with modern amenities and garden views.</p>
+      <div class="room-card-specs">
+        <span>45 m²</span><span class="dot">·</span>
+        <span>Queen Bed</span><span class="dot">·</span>
+        <span>2 Guests</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="room-card">
+    <div class="room-card-img">
+      <img src="10.jpg" alt="Junior Suite"/>
+      <div class="room-card-overlay"><a href="#" class="room-card-btn">View Room</a></div>
+    </div>
+    <div class="room-card-info">
+      <div class="room-card-top">
+        <h4 class="room-card-name">Junior Suite</h4>
+        <div class="room-card-price">$520<span>/night</span></div>
+      </div>
+      <p class="room-card-desc">A spacious suite with a separate lounge and premium bath.</p>
+      <div class="room-card-specs">
+        <span>75 m²</span><span class="dot">·</span>
+        <span>King Bed</span><span class="dot">·</span>
+        <span>2 Guests</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="room-card">
+    <div class="room-card-img">
+      <img src="4.jpg" alt="Pool Villa"/>
+      <div class="room-card-overlay"><a href="#" class="room-card-btn">View Room</a></div>
+    </div>
+    <div class="room-card-info">
+      <div class="room-card-top">
+        <h4 class="room-card-name">Pool Villa</h4>
+        <div class="room-card-price">$680<span>/night</span></div>
+      </div>
+      <p class="room-card-desc">Private plunge pool with open-air terrace and lush garden.</p>
+      <div class="room-card-specs">
+        <span>95 m²</span><span class="dot">·</span>
+        <span>King Bed</span><span class="dot">·</span>
+        <span>2–4 Guests</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="rooms-footer">
+  <a href="rooms.html" class="gallery-btn">
+    <span>View All Rooms</span>
+    <svg width="15" height="10" viewBox="0 0 15 10" fill="none">
+      <path d="M1 5h13M9 1l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </a>
+</div>
+
+<!-- TESTIMONIALS -->
+<section class="testi" id="testimonials">
+  <div class="testi-header">
+    <div class="about-eyebrow" style="justify-content:center;">
+      <div class="eyebrow-dash"></div>
+      <span>Guest Reviews</span>
+      <div class="eyebrow-dash"></div>
+    </div>
+    <h2 class="testi-heading">Words From Our <em>Guests</em></h2>
+  </div>
+  <div class="testi-track">
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"An absolute dream stay. Every detail was perfect — from the welcome drink to the stunning view from our suite."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">S</div>
+        <div><strong>Ummi musa</strong><span>Bauchi ,Nigeria</span></div>
+      </div>
+    </div>
+    <div class="testi-card testi-card--gold">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"The Legend's Suite exceeded all expectations. Staff were incredibly attentive and the spa was world-class."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">J</div>
+        <div><strong>Aliyu Musa</strong><span>London, UK</span></div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"Truly a 5-star experience from start to finish. The fine dining restaurant alone is worth the visit."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">A</div>
+        <div><strong>Amira Hassan</strong><span>Dubai, UAE</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer" id="footer">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div style="font-family:'Playfair Display',serif;font-size:22px;color:#FAF7F2;letter-spacing:0.12em;">Luxury<em style="font-style:italic;color:#BFA06A;">Hotel</em></div>
+      <div style="height:1px;background:linear-gradient(90deg,rgba(191,160,106,0.45),transparent 80%);margin:6px 0;"></div>
+      <div style="font-size:7px;letter-spacing:0.40em;color:#BFA06A;text-transform:uppercase;">Where Elegance Lives</div>
+      <p class="footer-tagline">A timeless sanctuary of luxury, comfort, and impeccable service since 2010.</p>
+      <div class="footer-socials">
+        <a href="#" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.3"/><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.3"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+        </a>
+        <a href="#" aria-label="Facebook">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#" aria-label="Twitter">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M23 3a10.9 10.9 0 01-3.14 1.53A4.48 4.48 0 0012 8v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h5>Quick Links</h5>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#rooms">Rooms &amp; Suites</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Services</h5>
+      <ul>
+        <li><a href="#">Fine Dining</a></li>
+        <li><a href="#">Spa &amp; Wellness</a></li>
+        <li><a href="#">Infinity Pool</a></li>
+        <li><a href="#">Conference Rooms</a></li>
+        <li><a href="#">Airport Transfer</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Contact Us</h5>
+      <ul class="footer-contact">
+        <li>
+          <svg viewBox="0 0 24 24" fill="none"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke="currentColor" stroke-width="1.3"/><circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="1.3"/></svg>
+          <span>123 Luxury Avenue, City Center</span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 01.01 1.19 2 2 0 012 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14v2.92z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          <span>+1 (800) 123-4567</span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="currentColor" stroke-width="1.3"/><path d="M22 6l-10 7L2 6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          <span>info@luxuryhotel.com</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 LuxuryHotel. All rights reserved.</span>
+    <div class="footer-bottom-links">
+      <a href="#">Privacy Policy</a>
+      <span>·</span>
+      <a href="#">Terms of Service</a>
+    </div>
+  </div>
+</footer>
+
+
+  <script>
+    /* slideshow with progress bar */
+    const slides       = document.querySelectorAll('.slide');
+    const progressFill = document.getElementById('progressFill');
+    const INTERVAL     = 7000;
+    let current  = 0;
+    let startTs  = null;
+    let rafId    = null;
+
+    function tick(ts) {
+      if (!startTs) startTs = ts;
+      const elapsed = ts - startTs;
+      const pct = Math.min((elapsed / INTERVAL) * 100, 100);
+      progressFill.style.height = pct + '%';
+      if (elapsed >= INTERVAL) {
+        slides[current].classList.remove('active');
+        current = (current + 1) % slides.length;
+        slides[current].classList.add('active');
+        startTs = null;
+        progressFill.style.height = '0%';
+      }
+      rafId = requestAnimationFrame(tick);
+    }
+    rafId = requestAnimationFrame(tick);
+
+    /* nav scroll */
+    const mainNav = document.getElementById('mainNav');
+    window.addEventListener('scroll', () => {
+      mainNav.classList.toggle('scrolled', window.scrollY > 28);
+    }, { passive: true });
+
+    /* menu */
+    function openMenu()  { document.getElementById('navOverlay').classList.add('open'); }
+    function closeMenu() { document.getElementById('navOverlay').classList.remove('open'); }
+    
+    
+    /* about */
+
+const revealEls = document.querySelectorAll('.about-images, .about-content');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+  });
+}, { threshold: 0.15 });
+revealEls.forEach(el => observer.observe(el));
+
+/* gallery */
+
+const galObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); galObs.unobserve(e.target); }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.gallery-header, .gallery-footer').forEach(el => galObs.observe(el));
+
+const track = document.getElementById('galleryTrack');
+let isDown = false, startX, scrollLeft;
+track.addEventListener('mousedown', e => {
+  isDown = true; track.style.animationPlayState = 'paused';
+  startX = e.pageX - track.offsetLeft;
+  scrollLeft = track.parentElement.scrollLeft;
+});
+track.addEventListener('mouseleave', () => { isDown = false; track.style.animationPlayState = 'running'; });
+track.addEventListener('mouseup',    () => { isDown = false; track.style.animationPlayState = 'running'; });
+track.addEventListener('mousemove', e => {
+  if (!isDown) return; e.preventDefault();
+  const x = e.pageX - track.offsetLeft;
+  track.parentElement.scrollLeft = scrollLeft - (x - startX);
+});
+track.addEventListener('touchstart', e => {
+  startX = e.touches[0].pageX; track.style.animationPlayState = 'paused';
+}, { passive: true });
+track.addEventListener('touchend', () => { track.style.animationPlayState = 'running'; });
+
+
+
+const secObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); secObs.unobserve(e.target); }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.rooms-header, .rooms-inner, .rooms-footer, .testi-header, .testi-track').forEach(el => secObs.observe(el));
+  </script>
+</body>
+</html>

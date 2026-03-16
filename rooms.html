@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rooms & Suites — Luxury Hotel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    :root {
+      --gold:      #BFA06A;
+      --gold-b:    #D4B97A;
+      --gold-line: rgba(191,160,106,0.40);
+      --white:     #FAF7F2;
+      --ink:       #0C0B09;
+      --light:     #F2F2F2;
+      --mid:       #666360;
+      --dark-text: #1A1714;
+    }
+    html, body { font-family:'Jost',sans-serif; background:var(--light); color:var(--dark-text); overflow-x:hidden; }
+
+    /* ── NAV ── */
+    .nav {
+      position:fixed; top:0; left:0; right:0; z-index:100;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:18px clamp(20px,6vw,52px);
+      background:rgba(12,11,9,0.96); backdrop-filter:blur(18px);
+      border-bottom:1px solid rgba(191,160,106,0.10);
+    }
+    .logo-name { font-family:'Playfair Display',serif; font-size:20px; font-weight:400; letter-spacing:0.12em; color:var(--white); text-decoration:none; }
+    .logo-name em { font-style:italic; color:var(--gold); }
+    .nav-links { display:flex; align-items:center; gap:clamp(18px,3vw,36px); }
+    .nav-links a { font-size:10.5px; font-weight:300; letter-spacing:0.22em; color:rgba(250,247,242,0.60); text-decoration:none; text-transform:uppercase; transition:color 0.3s; position:relative; }
+    .nav-links a:hover, .nav-links a.active { color:var(--gold); }
+    .nav-links a.active::after { content:''; position:absolute; bottom:-4px; left:0; right:0; height:1px; background:var(--gold); }
+    .nav-book {
+      padding:9px 22px; background:var(--gold); color:var(--ink);
+      font-size:9.5px; font-weight:500; letter-spacing:0.28em;
+      text-transform:uppercase; text-decoration:none;
+      transition:background 0.3s;
+    }
+    .nav-book:hover { background:var(--gold-b); }
+    .hamburger { display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:4px; }
+    .hamburger i { display:block; height:1px; background:var(--white); transition:width 0.3s; }
+    .hamburger i:nth-child(1) { width:26px; }
+    .hamburger i:nth-child(2) { width:18px; }
+    .hamburger i:nth-child(3) { width:22px; }
+
+    /* ── PAGE HERO ── */
+    .page-hero {
+      height: 52vh; min-height:340px;
+      position:relative; overflow:hidden;
+      display:flex; align-items:flex-end;
+      padding: 0 clamp(20px,6vw,52px) clamp(36px,6vh,56px);
+    }
+    .page-hero-bg {
+      position:absolute; inset:0;
+      background:url('https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=1400&q=85') center/cover no-repeat;
+    }
+    .page-hero-overlay {
+      position:absolute; inset:0;
+      background:linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.72) 100%);
+    }
+    .page-hero-content { position:relative; z-index:2; }
+    .breadcrumb {
+      display:flex; align-items:center; gap:8px;
+      font-size:9px; font-weight:300; letter-spacing:0.32em;
+      color:rgba(250,247,242,0.50); text-transform:uppercase;
+      margin-bottom:12px;
+    }
+    .breadcrumb a { color:var(--gold); text-decoration:none; }
+    .breadcrumb span { color:rgba(250,247,242,0.30); }
+    .page-hero h1 {
+      font-family:'Playfair Display',serif;
+      font-size:clamp(36px,7vw,64px); font-weight:400;
+      color:var(--white); line-height:1.08;
+    }
+    .page-hero h1 em { font-style:italic; color:var(--gold-b); }
+
+    /* ── FILTER BAR ── */
+    .filter-bar {
+      background:#fff; border-bottom:1px solid rgba(191,160,106,0.15);
+      position:sticky; top:57px; z-index:90;
+    }
+    .filter-inner {
+      max-width:1100px; margin:0 auto;
+      padding:0 clamp(20px,6vw,52px);
+      display:flex; align-items:center; gap:0; overflow-x:auto;
+      scrollbar-width:none;
+    }
+    .filter-inner::-webkit-scrollbar { display:none; }
+    .filter-btn {
+      flex-shrink:0; padding:18px 24px;
+      font-family:'Jost',sans-serif; font-size:9.5px; font-weight:400;
+      letter-spacing:0.28em; text-transform:uppercase;
+      color:var(--mid); background:none; border:none;
+      border-bottom:2px solid transparent;
+      cursor:pointer; transition:all 0.3s; white-space:nowrap;
+    }
+    .filter-btn:hover { color:var(--dark-text); }
+    .filter-btn.active { color:var(--gold); border-bottom-color:var(--gold); }
+
+    /* ── ROOMS GRID ── */
+    .rooms-page {
+      max-width:1100px; margin:0 auto;
+      padding:clamp(48px,8vh,80px) clamp(20px,6vw,52px);
+    }
+
+    /* featured big card */
+    .room-big {
+      display:grid; grid-template-columns:1.1fr 0.9fr;
+      background:#fff; border:1px solid rgba(191,160,106,0.15);
+      overflow:hidden; margin-bottom:clamp(28px,4vh,44px);
+      opacity:0; transform:translateY(28px);
+      transition:opacity 0.9s ease, transform 0.9s ease, box-shadow 0.3s;
+    }
+    .room-big.visible { opacity:1; transform:translateY(0); }
+    .room-big:hover { box-shadow:0 16px 52px rgba(191,160,106,0.13); }
+
+    .room-big-img { position:relative; overflow:hidden; min-height:440px; }
+    .room-big-img img { width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.8s ease; }
+    .room-big:hover .room-big-img img { transform:scale(1.04); }
+    .room-big-badge {
+      position:absolute; top:20px; left:20px;
+      background:var(--gold); color:var(--ink);
+      font-size:8.5px; font-weight:500; letter-spacing:0.28em;
+      text-transform:uppercase; padding:7px 16px;
+    }
+
+    .room-big-info {
+      padding:clamp(28px,4vw,48px) clamp(24px,3.5vw,40px);
+      display:flex; flex-direction:column; justify-content:center; gap:18px;
+    }
+    .room-tag { font-size:9px; font-weight:400; letter-spacing:0.42em; color:var(--gold); text-transform:uppercase; }
+    .room-title { font-family:'Playfair Display',serif; font-size:clamp(24px,3.5vw,38px); font-weight:400; color:var(--dark-text); line-height:1.15; }
+    .room-desc { font-size:13px; font-weight:300; color:var(--mid); line-height:2; }
+    .room-specs { display:flex; flex-wrap:wrap; gap:14px; }
+    .room-spec { display:flex; align-items:center; gap:7px; font-size:11.5px; font-weight:300; color:#555250; }
+    .room-spec svg { width:15px; height:15px; color:var(--gold); flex-shrink:0; }
+    .room-amenities { display:flex; flex-wrap:wrap; gap:8px; }
+    .amenity-tag {
+      font-size:9px; font-weight:400; letter-spacing:0.18em;
+      color:var(--mid); text-transform:uppercase;
+      padding:5px 12px; border:1px solid rgba(191,160,106,0.25);
+    }
+    .room-price-row {
+      display:flex; align-items:center; justify-content:space-between;
+      flex-wrap:wrap; gap:14px; padding-top:18px;
+      border-top:1px solid rgba(191,160,106,0.18);
+    }
+    .room-from { font-size:10px; font-weight:300; color:#aaa; margin-right:3px; }
+    .room-price-val { font-family:'Playfair Display',serif; font-size:30px; font-weight:400; color:var(--dark-text); }
+    .room-per { font-size:11px; font-weight:300; color:#aaa; margin-left:3px; }
+    .btn-gold {
+      display:inline-flex; align-items:center; gap:10px;
+      padding:13px 28px; background:var(--gold); color:var(--ink);
+      font-family:'Jost',sans-serif; font-size:10px; font-weight:500;
+      letter-spacing:0.28em; text-transform:uppercase;
+      text-decoration:none; border:none; cursor:pointer;
+      position:relative; overflow:hidden; transition:color 0.35s;
+    }
+    .btn-gold::after { content:''; position:absolute; inset:0; background:var(--ink); transform:scaleX(0); transform-origin:left; transition:transform 0.4s cubic-bezier(0.77,0,0.175,1); }
+    .btn-gold:hover { color:var(--gold); }
+    .btn-gold:hover::after { transform:scaleX(1); }
+    .btn-gold span, .btn-gold svg { position:relative; z-index:1; }
+
+    /* standard cards grid */
+    .cards-grid {
+      display:grid; grid-template-columns:repeat(3,1fr);
+      gap:clamp(16px,2.5vw,28px);
+    }
+    .room-card {
+      background:#fff; border:1px solid rgba(191,160,106,0.14);
+      overflow:hidden; display:flex; flex-direction:column;
+      opacity:0; transform:translateY(28px);
+      transition:opacity 0.8s ease, transform 0.8s ease, box-shadow 0.3s;
+    }
+    .room-card.visible { opacity:1; transform:translateY(0); }
+    .room-card:nth-child(2) { transition-delay:0.12s; }
+    .room-card:nth-child(3) { transition-delay:0.22s; }
+    .room-card:nth-child(4) { transition-delay:0.08s; }
+    .room-card:nth-child(5) { transition-delay:0.18s; }
+    .room-card:nth-child(6) { transition-delay:0.28s; }
+    .room-card:hover { box-shadow:0 12px 40px rgba(191,160,106,0.13); }
+    .room-card-img { position:relative; overflow:hidden; aspect-ratio:4/3; }
+    .room-card-img img { width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.7s ease; }
+    .room-card:hover .room-card-img img { transform:scale(1.06); }
+    .room-card-overlay { position:absolute; inset:0; background:rgba(12,11,9,0.42); display:flex; align-items:center; justify-content:center; opacity:0; transition:opacity 0.35s; }
+    .room-card:hover .room-card-overlay { opacity:1; }
+    .overlay-btn { padding:10px 22px; border:1px solid rgba(250,247,242,0.65); color:var(--white); font-size:9px; font-weight:400; letter-spacing:0.28em; text-transform:uppercase; text-decoration:none; transition:background 0.3s, color 0.3s; }
+    .overlay-btn:hover { background:var(--gold); border-color:var(--gold); color:var(--ink); }
+    .room-card-body { padding:20px 22px 24px; flex:1; display:flex; flex-direction:column; gap:8px; }
+    .room-card-top { display:flex; align-items:flex-start; justify-content:space-between; gap:8px; }
+    .room-card-name { font-family:'Playfair Display',serif; font-size:clamp(16px,1.9vw,20px); font-weight:400; color:var(--dark-text); }
+    .room-card-price { font-family:'Playfair Display',serif; font-size:18px; color:var(--gold); white-space:nowrap; }
+    .room-card-price small { font-family:'Jost',sans-serif; font-size:10px; color:#aaa; font-weight:300; }
+    .room-card-desc { font-size:12px; font-weight:300; color:var(--mid); line-height:1.8; flex:1; }
+    .room-card-meta { display:flex; gap:0; flex-wrap:wrap; margin-top:4px; }
+    .room-card-meta span { font-size:10px; font-weight:300; color:#aaa; }
+    .room-card-meta .sep { margin:0 7px; color:var(--gold); opacity:0.5; }
+    .room-card-footer { padding:14px 22px; border-top:1px solid rgba(191,160,106,0.12); display:flex; justify-content:flex-end; }
+    .btn-outline {
+      display:inline-flex; align-items:center; gap:8px;
+      padding:9px 20px; border:1px solid var(--gold-line); color:var(--gold);
+      font-size:9.5px; font-weight:400; letter-spacing:0.26em;
+      text-transform:uppercase; text-decoration:none;
+      position:relative; overflow:hidden; transition:color 0.3s;
+    }
+    .btn-outline::before { content:''; position:absolute; inset:0; background:var(--gold); transform:scaleX(0); transform-origin:left; transition:transform 0.4s cubic-bezier(0.77,0,0.175,1); }
+    .btn-outline:hover { color:var(--ink); }
+    .btn-outline:hover::before { transform:scaleX(1); }
+    .btn-outline span, .btn-outline svg { position:relative; z-index:1; }
+
+    /* section divider */
+    .section-divider {
+      display:flex; align-items:center; gap:18px;
+      margin: clamp(40px,6vh,60px) 0 clamp(28px,4vh,40px);
+    }
+    .section-divider h2 { font-family:'Playfair Display',serif; font-size:clamp(20px,3vw,28px); font-weight:400; color:var(--dark-text); white-space:nowrap; }
+    .section-divider h2 em { font-style:italic; color:var(--gold); }
+    .divider-line { flex:1; height:1px; background:linear-gradient(to right, rgba(191,160,106,0.3), transparent); }
+
+    /* ── MOBILE NAV ── */
+    .nav-overlay { position:fixed; inset:0; z-index:200; background:rgba(10,9,7,0.97); backdrop-filter:blur(22px); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; transform:translateY(-100%); transition:transform 0.6s cubic-bezier(0.77,0,0.175,1); }
+    .nav-overlay.open { transform:translateY(0); }
+    .nav-close { position:absolute; top:22px; right:clamp(20px,6vw,52px); background:none; border:none; color:var(--white); font-size:26px; cursor:pointer; transition:color 0.3s; }
+    .nav-close:hover { color:var(--gold); }
+    .nav-ol { font-family:'Playfair Display',serif; font-size:clamp(26px,6.5vw,44px); font-weight:400; color:rgba(250,247,242,0.78); text-decoration:none; letter-spacing:0.06em; padding:6px 0; transition:color 0.3s; }
+    .nav-ol:hover { color:var(--gold); }
+    .nav-sep { width:1px; height:16px; background:rgba(191,160,106,0.22); margin:2px 0; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width:900px) {
+      .room-big { grid-template-columns:1fr; }
+      .room-big-img { min-height:280px; }
+      .cards-grid { grid-template-columns:1fr 1fr; }
+      .nav-links, .nav-book { display:none; }
+      .hamburger { display:flex; }
+    }
+    @media (max-width:560px) {
+      .cards-grid { grid-template-columns:1fr; }
+    }
+
+    /* scroll reveal */
+    @keyframes fadeUp { from { opacity:0; transform:translateY(28px); } to { opacity:1; transform:translateY(0); } }
+  </style>
+</head>
+<body>
+
+  <!-- NAV OVERLAY -->
+  <div class="nav-overlay" id="navOverlay">
+    <button class="nav-close" onclick="closeMenu()">✕</button>
+    <a class="nav-ol" href="index.html">Home</a>
+    <div class="nav-sep"></div>
+    <a class="nav-ol" href="rooms.html">Rooms</a>
+    <div class="nav-sep"></div>
+    <a class="nav-ol" href="gallery.html">Gallery</a>
+    <div class="nav-sep"></div>
+    <a class="nav-ol" href="contact.html">Contact</a>
+  </div>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <a href="index.html" class="logo-name">Luxury<em>Hotel</em></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="rooms.html" class="active">Rooms</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <a href="#" class="nav-book" onclick="openBooking()">Book Now</a>
+    <button class="hamburger" onclick="openMenu()"><i></i><i></i><i></i></button>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <div class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div class="page-hero-overlay"></div>
+    <div class="page-hero-content">
+      <div class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span>›</span>
+        <span>Rooms &amp; Suites</span>
+      </div>
+      <h1>Rooms &amp; <em>Suites</em></h1>
+    </div>
+  </div>
+
+  <!-- FILTER BAR -->
+  <div class="filter-bar">
+    <div class="filter-inner">
+      <button class="filter-btn active" onclick="filterRooms('all', this)">All Rooms</button>
+      <button class="filter-btn" onclick="filterRooms('suite', this)">Suites</button>
+      <button class="filter-btn" onclick="filterRooms('deluxe', this)">Deluxe</button>
+      <button class="filter-btn" onclick="filterRooms('villa', this)">Villas</button>
+      <button class="filter-btn" onclick="filterRooms('family', this)">Family</button>
+    </div>
+  </div>
+
+  <!-- ROOMS CONTENT -->
+  <div class="rooms-page">
+
+<!-- FEATURED BIG ROOM -->
+    <div class="room-big" data-category="suite">
+      <div class="room-big-img">
+        <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=1000&q=85" alt="Presidential Suite"/>
+        <div class="room-big-badge">Most Popular</div>
+      </div>
+      <div class="room-big-info">
+        <div class="room-tag">Signature Suite</div>
+        <h2 class="room-title">Legend's Suite</h2>
+        <p class="room-desc">An unrivalled sanctuary of space and sophistication. Floor-to-ceiling windows frame breathtaking city views, while bespoke furnishings and a private terrace complete this crown jewel of our hotel.</p>
+        <div class="room-specs">
+          <div class="room-spec">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            <span>120 m²</span>
+          </div>
+          <div class="room-spec">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M3 20v-8a2 2 0 012-2h14a2 2 0 012 2v8M1 20h22M7 10V7a5 5 0 0110 0v3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            <span>King Bed</span>
+          </div>
+          <div class="room-spec">
+            <svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="1.3"/><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            <span>1–3 Guests</span>
+          </div>
+          <div class="room-spec">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            <span>City View</span>
+          </div>
+        </div>
+        <div class="room-amenities">
+          <span class="amenity-tag">Free WiFi</span>
+          <span class="amenity-tag">Private Terrace</span>
+          <span class="amenity-tag">Butler Service</span>
+          <span class="amenity-tag">Jacuzzi</span>
+          <span class="amenity-tag">Mini Bar</span>
+        </div>
+        <div class="room-price-row">
+          <div>
+            <span class="room-from">From</span>
+            <span class="room-price-val">$850</span>
+            <span class="room-per">/ night</span>
+          </div>
+          <a href="#" class="btn-gold" onclick="openBooking(); return false;">
+            <span>Book Now</span>
+            <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- STANDARD ROOMS -->
+    <div class="section-divider">
+      <h2>All <em>Rooms</em></h2>
+      <div class="divider-line"></div>
+    </div>
+
+    <div class="cards-grid" id="cardsGrid">
+
+      <div class="room-card" data-category="deluxe">
+        <div class="room-card-img">
+          <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=700&q=85" alt="Deluxe Room"/>
+          <div class="room-card-overlay"><a href="#" class="overlay-btn" onclick="openBooking(); return false;">Book Room</a></div>
+        </div>
+        <div class="room-card-body">
+          <div class="room-card-top">
+            <h3 class="room-card-name">Deluxe Room</h3>
+            <div class="room-card-price">$320<small>/night</small></div>
+          </div>
+          <p class="room-card-desc">Elegant comfort with modern amenities and beautiful garden views.</p>
+          <div class="room-card-meta">
+            <span>45 m²</span><span class="sep">·</span>
+            <span>Queen Bed</span><span class="sep">·</span>
+            <span>2 Guests</span>
+          </div>
+        </div>
+        <div class="room-card-footer">
+          <a href="#" class="btn-outline" onclick="openBooking(); return false;">
+            <span>Reserve</span>
+            <svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5h10M7 1l3 3.5L7 8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="room-card" data-category="suite">
+        <div class="room-card-img">
+          <img src="https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=700&q=85" alt="Junior Suite"/>
+          <div class="room-card-overlay"><a href="#" class="overlay-btn" onclick="openBooking(); return false;">Book Room</a></div>
+        </div>
+        <div class="room-card-body">
+          <div class="room-card-top">
+            <h3 class="room-card-name">Junior Suite</h3>
+            <div class="room-card-price">$520<small>/night</small></div>
+          </div>
+          <p class="room-card-desc">A spacious suite with a separate lounge area and premium bathroom.</p>
+          <div class="room-card-meta">
+            <span>75 m²</span><span class="sep">·</span>
+            <span>King Bed</span><span class="sep">·</span>
+            <span>2 Guests</span>
+          </div>
+        </div>
+        <div class="room-card-footer">
+          <a href="#" class="btn-outline" onclick="openBooking(); return false;">
+            <span>Reserve</span>
+            <svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5h10M7 1l3 3.5L7 8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="room-card" data-category="villa">
+        <div class="room-card-img">
+          <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=700&q=85" alt="Pool Villa"/>
+          <div class="room-card-overlay"><a href="#" class="overlay-btn" onclick="openBooking(); return false;">Book Room</a></div>
+        </div>
+        <div class="room-card-body">
+          <div class="room-card-top">
+            <h3 class="room-card-name">Pool Villa</h3>
+            <div class="room-card-price">$680<small>/night</small></div>
+          </div>
+          <p class="room-card-desc">Private plunge pool with open-air terrace and lush tropical garden.</p>
+          <div class="room-card-meta">
+            <span>95 m²</span><span class="sep">·</span>
+            <span>King Bed</span><span class="sep">·</span>
+            <span>2–4 Guests</span>
+          </div>
+        </div>
+        <div class="room-card-footer">
+          <a href="#" class="btn-outline" onclick="openBooking(); return false;">
+            <span>Reserve</span>
+            <svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5h10M7 1l3 3.5L7 8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="room-card" data-category="family">
+        <div class="room-card-img">
+          <img src="https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=700&q=85" alt="Family Suite"/>
+          <div class="room-card-overlay"><a href="#" class="overlay-btn" onclick="openBooking(); return false;">Book Room</a></div>
+        </div>
+        <div class="room-card-body">
+          <div class="room-card-top">
+            <h3 class="room-card-name">Family Suite</h3>
+            <div class="room-card-price">$620<small>/night</small></div>
+          </div>
+          <p class="room-card-desc">Designed for families, with two bedrooms and a shared living space.</p>
+          <div class="room-card-meta">
+            <span>110 m²</span><span class="sep">·</span>
+            <span>2 Bedrooms</span><span class="sep">·</span>
+            <span>4–6 Guests</span>
+          </div>
+        </div>
+        <div class="room-card-footer">
+          <a href="#" class="btn-outline" onclick="openBooking(); return false;">
+            <span>Reserve</span>
+            <svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5h10M7 1l3 3.5L7 8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="room-card" data-category="deluxe">
+        <div class="room-card-img">
+          <img src="https://images.unsplash.com/photo-1540518614846-7eded433c457?w=700&q=85" alt="Classic Room"/>
+          <div class="room-card-overlay"><a href="#" class="overlay-btn" onclick="openBooking(); return false;">Book Room</a></div>
+        </div>
+        <div class="room-card-body">
+          <div class="room-card-top">
+            <h3 class="room-card-name">Classic Room</h3>
+            <div class="room-card-price">$220<small>/night</small></div>
+          </div>
+          <p class="room-card-desc">Timeless design with all essential comforts for a restful stay.</p>
+          <div class="room-card-meta">
+            <span>32 m²</span><span class="sep">·</span>
+            <span>Double Bed</span><span class="sep">·</span>
+            <span>1–2 Guests</span>
+          </div>
+        </div>
+        <div class="room-card-footer">
+          <a href="#" class="btn-outline" onclick="openBooking(); return false;">
+            <span>Reserve</span>
+            <svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5h10M7 1l3 3.5L7 8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="room-card" data-category="villa">
+        <div class="room-card-img">
+          <img src="https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?w=700&q=85" alt="Garden Villa"/>
+          <div class="room-card-overlay"><a href="#" class="overlay-btn" onclick="openBooking(); return false;">Book Room</a></div>
+        </div>
+        <div class="room-card-body">
+          <div class="room-card-top">
+            <h3 class="room-card-name">Garden Villa</h3>
+            <div class="room-card-price">$580<small>/night</small></div>
+          </div>
+          <p class="room-card-desc">Nestled among lush gardens with a private outdoor shower and daybed.</p>
+          <div class="room-card-meta">
+            <span>88 m²</span><span class="sep">·</span>
+            <span>King Bed</span><span class="sep">·</span>
+            <span>2 Guests</span>
+          </div>
+        </div>
+        <div class="room-card-footer">
+          <a href="#" class="btn-outline" onclick="openBooking(); return false;">
+            <span>Reserve</span>
+            <svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5h10M7 1l3 3.5L7 8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
+
+    </div>
+    </div>
+    
+    <!-- BOOKING POPUP -->
+  <div class="booking-overlay" id="bookingOverlay" onclick="closeBooking(event)">
+    <div class="booking-modal">
+      <button class="booking-close" onclick="closeBooking()">✕</button>
+      <div class="booking-header">
+        <div class="eyebrow-row"><div class="e-dash"></div><span>Reservations</span></div>
+        <h2>Book Your <em>Stay</em></h2>
+      </div>
+      <form class="booking-form" onsubmit="submitBooking(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Check-in</label>
+            <input type="date" id="checkin" required/>
+          </div>
+          <div class="form-group">
+            <label>Check-out</label>
+            <input type="date" id="checkout" required/>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Room Type</label>
+            <select id="roomType">
+              <option value="">Select a room</option>
+              <option>Presidential Suite</option>
+              <option>Junior Suite</option>
+              <option>Deluxe Room</option>
+              <option>Classic Room</option>
+              <option>Pool Villa</option>
+              <option>Garden Villa</option>
+              <option>Family Suite</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Guests</label>
+            <select id="guests">
+              <option>1 Guest</option>
+              <option selected>2 Guests</option>
+              <option>3 Guests</option>
+              <option>4 Guests</option>
+              <option>5+ Guests</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" placeholder="Your full name" required/>
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" placeholder="your@email.com" required/>
+        </div>
+        <div class="form-group">
+          <label>Special Requests <span style="font-weight:200;color:#aaa;">(optional)</span></label>
+          <textarea placeholder="Any special requests or preferences..." rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn-gold" style="width:100%;justify-content:center;padding:16px;">
+          <span>Confirm Reservation</span>
+          <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <style>
+    /* BOOKING POPUP */
+    .booking-overlay {
+      position:fixed; inset:0; z-index:300;
+      background:rgba(10,9,7,0.75); backdrop-filter:blur(8px);
+      display:flex; align-items:center; justify-content:center;
+      padding:20px; opacity:0; pointer-events:none;
+      transition:opacity 0.4s ease;
+    }
+    .booking-overlay.open { opacity:1; pointer-events:all; }
+    .booking-modal {
+      background:#fff; width:100%; max-width:560px;
+      max-height:90vh; overflow-y:auto;
+      padding:clamp(28px,5vw,48px);
+      position:relative;
+      transform:translateY(24px); transition:transform 0.4s ease;
+      scrollbar-width:thin; scrollbar-color:var(--gold-line) transparent;
+    }
+    .booking-overlay.open .booking-modal { transform:translateY(0); }
+    .booking-close {
+      position:absolute; top:18px; right:20px;
+      background:none; border:none; font-size:22px;
+      color:var(--mid); cursor:pointer; transition:color 0.3s;
+    }
+    .booking-close:hover { color:var(--gold); }
+    .booking-header { margin-bottom:28px; }
+    .eyebrow-row { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+    .e-dash { width:28px; height:1px; background:var(--gold); }
+    .eyebrow-row span { font-size:9px; font-weight:400; letter-spacing:0.42em; color:var(--gold); text-transform:uppercase; }
+    .booking-header h2 { font-family:'Playfair Display',serif; font-size:clamp(24px,4vw,32px); font-weight:400; color:var(--dark-text); }
+    .booking-header h2 em { font-style:italic; color:var(--gold); }
+    .booking-form { display:flex; flex-direction:column; gap:16px; }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    .form-group { display:flex; flex-direction:column; gap:7px; }
+    .form-group label { font-size:9.5px; font-weight:500; letter-spacing:0.28em; text-transform:uppercase; color:var(--dark-text); }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      padding:12px 14px; border:1px solid rgba(191,160,106,0.25);
+      background:#FAFAFA; font-family:'Jost',sans-serif;
+      font-size:13px; font-weight:300; color:var(--dark-text);
+      outline:none; transition:border-color 0.3s;
+      appearance:none; -webkit-appearance:none;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color:var(--gold); background:#fff; }
+    .form-group textarea { resize:vertical; min-height:80px; }
+    @media (max-width:480px) { .form-row { grid-template-columns:1fr; } }
+  </style>
+
+<script>
+    /* reveal on scroll */
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, { threshold:0.1 });
+    document.querySelectorAll('.room-big, .room-card').forEach(el => obs.observe(el));
+
+    /* filter */
+    function filterRooms(cat, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.room-card').forEach(card => {
+        const show = cat === 'all' || card.dataset.category === cat;
+        card.style.display = show ? 'flex' : 'none';
+      });
+      const bigRoom = document.querySelector('.room-big');
+      if(bigRoom) bigRoom.style.display = (cat === 'all' || cat === 'suite') ? 'grid' : 'none';
+    }
+
+    /* booking popup */
+    function openBooking() { document.getElementById('bookingOverlay').classList.add('open'); document.body.style.overflow='hidden'; }
+    function closeBooking(e) {
+      if(!e || e.target === document.getElementById('bookingOverlay')) {
+        document.getElementById('bookingOverlay').classList.remove('open');
+        document.body.style.overflow='';
+      }
+    }
+    function submitBooking(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('button[type=submit] span');
+      btn.textContent = 'Reservation Sent ✓';
+      setTimeout(() => { closeBooking(); btn.textContent = 'Confirm Reservation'; e.target.reset(); }, 2000);
+    }
+
+    /* nav */
+    function openMenu()  { document.getElementById('navOverlay').classList.add('open'); }
+    function closeMenu() { document.getElementById('navOverlay').classList.remove('open'); }
+
+    /* set min dates */
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('checkin').min = today;
+    document.getElementById('checkout').min = today;
+    document.getElementById('checkin').addEventListener('change', e => {
+      document.getElementById('checkout').min = e.target.value;
+    });
+  </script>
+
+</body>
+</html>
